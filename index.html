@@ -7,5 +7,51 @@
   </head>
   <body>
     <h1>Práctica formativa 1</h1>
+    <form id="formDatos">
+
+      <!-- Parámetros que se le envían al backend: usuario y contraseña -->
+       
+      <label for="usuario">Nombre de usuario:</label>
+      <input type="text" id="usuario" name="usuario" required><br><br>
+  
+      <label for="clave">Contraseña:</label>
+      <input type="password" id="clave" name="clave" required><br><br>
+  
+      <button type="submit">Enviar</button>
+    </form>
+  
+    
+    <p id="respuesta"></p>
+  
+    <script>
+      
+      document.getElementById('formDatos').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        
+  
+        const datos = {
+          usuario: document.getElementById('usuario').value,
+          clave: document.getElementById('clave').value
+        };
+  
+        
+        fetch('backend.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+        })
+        .then(res => res.json())
+        .then(respuesta => {
+          document.getElementById('respuesta').innerText = respuesta.mensaje;
+        })
+        .catch(err => {
+          document.getElementById('respuesta').innerText = "Error al enviar los datos";
+          console.error(err);
+        });
+      });
+    </script>
+
   </body>
 </html>
